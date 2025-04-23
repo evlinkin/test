@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rive Animation High Quality</title>
+</head>
+<body style="margin: 0; padding: 0; overflow: hidden;">
+  <canvas id="rive-canvas" style="width: 100vw; height: 100vh;"></canvas>
+
+  <script src="https://unpkg.com/@rive-app/webgl"></script>
+  <script>
+    const canvas = document.getElementById("rive-canvas");
+    const dpr = window.devicePixelRatio || 1;
+
+    canvas.width = canvas.clientWidth * dpr;
+    canvas.height = canvas.clientHeight * dpr;
+
+    new rive.Rive({
+      src: "UI.riv",
+      canvas: canvas,
+      autoplay: true,
+      stateMachines: ["State Machine 1"],
+      fit: rive.Fit.Cover,
+      useOffscreenRenderer: true,
+      onLoad: () => {
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
+      }
+    });
+  </script>
+</body>
+</html>
