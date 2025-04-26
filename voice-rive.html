@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Voice Rive</title>
+  <style>
+    html, body { margin: 0; padding: 0; background: transparent; }
+    canvas { width: 100vw; height: 100vh; display: block; }
+  </style>
+</head>
+<body>
+  <canvas id="riveCanvas"></canvas>
+  <script type="module">
+    import { Rive } from "https://unpkg.com/@rive-app/webgl@latest/dist/rive.js";
+
+    const canvas = document.getElementById("riveCanvas");
+
+    const response = await fetch("voice-animation.riv");
+    const buffer = await response.arrayBuffer();
+
+    const rive = new Rive({
+      canvas,
+      buffer,
+      autoplay: true,
+      onLoad: () => {
+        const viewModel = rive.data?.viewModels?.[0];
+        const volumeInput = viewModel?.inputs?.find(i => i.name === "volume");
+
+        window.addEventListener("message", (event) => {
+          const { type, key, value } = event.data?.pluginMessage || {};
+          if (type === "rive-data" && key === "volume" && volumeInput) {
+            volumeInput.value = value;
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
