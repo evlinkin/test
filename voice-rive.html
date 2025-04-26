@@ -32,7 +32,7 @@
         canvas,
         src: "voice-animation.riv", // <-- сюда укажешь свой .riv файл
         autoplay: true,
-        stateMachines: "State Machine", // Имя стейт-машины, если она есть
+        stateMachines: "State Machine", // <-- исправлено! имя без "1"
         onLoad: () => {
           console.log("Rive loaded!");
 
@@ -50,7 +50,7 @@
                 const volume = Math.min(60, Math.max(0, avg / 2));
 
                 // Отправляем громкость в Rive через Input
-                const inputs = riveInstance.stateMachineInputs("State Machine 1");
+                const inputs = riveInstance.stateMachineInputs("State Machine"); // <-- исправлено!
                 const volumeInput = inputs.find(input => input.name === "volume");
                 if (volumeInput) {
                   volumeInput.value = volume;
