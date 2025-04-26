@@ -11,8 +11,8 @@
 <body>
   <canvas id="riveCanvas"></canvas>
 
-  <!-- Правильное подключение библиотеки -->
-  <script src="https://unpkg.com/@rive-app/webgl@latest/dist/umd/rive.min.js"></script>
+  <!-- ПРАВИЛЬНО подключаем скрипт -->
+  <script src="https://cdn.rive.app/webgl/rive.min.js"></script>
 
   <script>
     const canvas = document.getElementById("riveCanvas");
@@ -20,12 +20,12 @@
     fetch("voice-animation.riv")
       .then(response => response.arrayBuffer())
       .then(buffer => {
-        const rive = new rive.Rive({
+        const riveInstance = new rive.Rive({
           canvas,
           buffer,
           autoplay: true,
           onLoad: () => {
-            const viewModel = rive.data?.viewModels?.[0];
+            const viewModel = riveInstance.data?.viewModels?.[0];
             const volumeInput = viewModel?.inputs?.find(i => i.name === "volume");
 
             window.addEventListener("message", (event) => {
