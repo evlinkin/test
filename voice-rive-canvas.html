@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Voice Reactive Rive (Canvas)</title>
+  <style>
+    html, body { margin: 0; padding: 0; background: black; }
+    .canvas-container {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      filter: blur(4px) drop-shadow(2px 4px 6px black);
+    }
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="canvas-container">
+    <canvas id="riveCanvas"></canvas>
+  </div>
+
+  <!-- Подключение Canvas-рендерера Rive -->
+  <script src="https://cdn.jsdelivr.net/npm/@rive-app/canvas@latest/dist/rive.min.js"></script>
+
+  <script>
+    const canvas = document.getElementById("riveCanvas");
+
+    fetch("voice-animation.riv")
+      .then(response => response.arrayBuffer())
+      .then(buffer => {
+        const riveInstance = new rive.Rive({
+          canvas: canvas,
+          buffer: buffer,
+          autoplay: true,
+          useOffscreenRenderer: false, // включаем канвас рендер
+          onLoad: () => {
+            const viewModel = riveInstance.data?.viewModels?.[0];
+            const volumeInput = viewModel?.inputs?.find(i => i.name === "volume");
+
+            window.addEventListener("message", (event) => {
+              const { type, key, value } = event.data?.pluginMessage || {};
+              if (type === "rive-data" && key === "volume" && volumeInput) {
+                volumeInput.value = value;
+              }
+            });
+          }
+        });
+      });
+  </script>
+</body>
+</html>
